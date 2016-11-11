@@ -129,6 +129,17 @@ class EventMachine::MQTT::ClientConnection < EventMachine::MQTT::Connection
   end
 
   # Send a subscribe message for one or more topics on the MQTT broker.
+  # The topics parameter should be one of the following:
+  # * String: subscribe to one topic with QoS 0
+  # * Array: subscribe to multiple topics with QoS 0
+  # * Hash: subscribe to multiple topics where the key is the topic and the value is the QoS level
+  #
+  # For example:
+  #   client.subscribe( 'a/b' )
+  #   client.subscribe( 'a/b', 'c/d' )
+  #   client.subscribe( ['a/b',0], ['c/d',1] )
+  #   client.subscribe( 'a/b' => 0, 'c/d' => 1 )
+  #
   def subscribe(*topics)
     # Defer subscribing until we are connected
     callback do
